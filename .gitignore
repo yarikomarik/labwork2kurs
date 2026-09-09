@@ -1,69 +1,118 @@
-# Prerequisites
-*.d
+# -------------------------------
+# Исключения для Linux
+# -------------------------------
+*~
+*.swp
+*.swo
+*.pid
+*.lock
+.directory
+.Trash-*
+*.core
+core.*
+# Файлы обновления пакетов и кэша
+*.deb
+*.rpm
+*.cache
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# -------------------------------
+# Исключения для Visual Studio Code
+# -------------------------------
+.vscode/
+!.vscode/settings.json   # при желании разрешить общие настройки
+*.code-workspace
+*.log
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
 
-# Precompiled Headers
-*.gch
-*.pch
-
-# Linker files
-*.ilk
-
-# Debugger Files
-*.pdb
-
-# Compiled Dynamic libraries
+# -------------------------------
+# Файлы сборки и зависимости (общие)
+# -------------------------------
+# Бинарные и объектные файлы
+*.exe
+*.dll
 *.so
 *.dylib
-*.dll
-*.so.*
+*.o
+*.obj
+*.class
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
 
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
-
-# Build directories
+# Папки сборки (стандартные)
+bin/
+obj/
 build/
-Build/
-build-*/
+target/
+out/
+dist/
+debug/
+release/
+Debug/
+Release/
+x64/
+x86/
 
-# CMake generated files
-CMakeFiles/
+# -------------------------------
+# C++ специфичные артефакты
+# -------------------------------
+*.a          # статические библиотеки (Linux/Unix)
+*.lib        # статические библиотеки (Windows)
+*.pdb        # отладочная информация (Windows)
+*.idb        # промежуточные отладочные файлы (Visual Studio)
+*.ilk        # incremental linker файлы
+*.exp        # экспортные файлы
+*.map        # файлы карты памяти
+*.gcda       # покрытие кода (gcov)
+*.gcno       # покрытие кода (gcov)
+gmon.out     # профилирование (gprof)
+
+# CMake
 CMakeCache.txt
-cmake_install.cmake
+CMakeFiles/
 Makefile
-install_manifest.txt
-compile_commands.json
+*.cmake
+!CMakeLists.txt   # не игнорируем сам CMakeLists.txt
+_build/            # часто используемая папка для сборки
+_deps/             # зависимости, загруженные через CMake (например, vcpkg)
 
-# Temporary files
-*.tmp
+# -------------------------------
+# Временные файлы редакторов и ОС
+# -------------------------------
+# Vim
+*.un~
+# Nano / другие
+*~
+
+# -------------------------------
+# Файлы логов и метаданные
+# -------------------------------
 *.log
+*.tmp
+*.temp
 *.bak
-*.swp
+*.backup
+*.cache
+*.metadata
 
-# vcpkg
-vcpkg_installed/
+# -------------------------------
+# Файлы IDE (на всякий случай)
+# -------------------------------
+.idea/
+*.iml
+.project
+.classpath
+.settings/
+*.hprof
 
-# debug information files
-*.dwo
-
-# test output & cache
-Testing/
-.cache/
+# -------------------------------
+# Файлы, генерируемые системой (Linux)
+# -------------------------------
+.dbus/
+.gvfs/
+.local/share/
+.thumbnails/
