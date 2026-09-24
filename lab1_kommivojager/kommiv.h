@@ -14,3 +14,5 @@ void maswap(int *a, int *b);
 void scanMatrD(int** matr, int m, int n);
 void printMatrD(int** matr, int m, int n);
 void randMatrD(int** matr, int m, int n, int lf, int rt);
+void greedyAlg(TSP& t, int startCity);
+void fillRandomMatrix(int** matrix, int nCities, int minCost, int maxCost);

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cmath>
 #include <algorithm>
+#include <random>
 
 using namespace std;
 
@@ -9,7 +10,7 @@ int main()
 {
     TSP t;
     t.bestLen=10000000;
-    int** distance = new int *[t.n];
+    t.distance = new int*[t.n];
     t.location=new bool[t.n];
     t.way = new int[t.n + 1];
     t.bestWay = new int[t.n + 1];
@@ -21,18 +22,19 @@ int main()
     cin>>t.n;
 
     
-    randMatrD(distance, t.n, t.n, 1, 10);
-    printMatrD(distance, t.n, t.n);
-    
-    cout << "Minimalnaya dlina: " << t.bestLen << endl;
-    cout << "Put: ";
+    fillRandomMatrix(t.distance, t.n, 1, 9);
+    printMatrD(t.distance, t.n, t.n);
+
+    //go(t, 0, 0, 0);
+    greedyAlg(t, 0);
+
+    cout << "min len:" << t.bestLen << endl;
+    cout << "way: ";
     for (int i = 0; i <= t.n; i++) {
         cout << t.bestWay[i];
-        if (i != t.n) cout << " -> ";
     }
     cout << endl;
 
-    // освобождаем память
     for (int i = 0; i < t.n; i++) delete[] t.distance[i];
     delete[] t.distance;
     delete[] t.location;
