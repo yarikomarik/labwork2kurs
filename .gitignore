@@ -49,6 +49,7 @@ __pycache__/
 # Собираются из .cpp командой g++ -o <имя>
 main
 time
+kommiv
 a.out
 *.out
 *.run
