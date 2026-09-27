@@ -1,1 +1,1 @@
-add_executable(lab1_simple_class.cpp)
+add_executable(lab1_simple_class main.cpp TimePoint.cpp TimePoint.h)

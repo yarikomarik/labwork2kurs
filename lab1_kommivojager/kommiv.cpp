@@ -1,6 +1,7 @@
 #include <cstddef>
 #include <cstdlib>
 #include <stdio.h>
+#include <iostream>
 #include <stdlib.h>
 #include <time.h>
 #include "kommiv.h"
@@ -21,38 +22,43 @@ void scanMatrD(int** matr, int m, int n){
         for (int j = 0; j < n; j++) 
             scanf("%d", &matr[i][j]);
 }
-//вывод динамической матрицы
-void printMatrD(int** matr, int m, int n){
-    for (int i = 0; i < m; i++){
-        for (int j = 0; j < n; j++)
-            printf("%d ", matr[i][j]);
-        printf("\n");
-    }
-} 
-//создает случайну динамическую матрицу m n с диапозоном случайных числел от lf до rt
-void fillRandomMatrix(int** matrix, int nCities, int minCost, int maxCost) {
-    std::random_device randomDevice;
-    std::mt19937 generator(randomDevice());
-    std::uniform_int_distribution<int> distribution(minCost, maxCost);
+void fillRandomMatrix(TSP& t, int minC, int maxC) {
+    static bool seeded = false;
+    if (!seeded) { srand(time(0)); seeded = true; }
 
-    for (int i = 0; i < nCities; i++) {
-        matrix[i][i] = 0;   // из города в себя — 0
-        for (int j = i + 1; j < nCities; j++) {
-            int value = distribution(generator);
-            matrix[i][j] = value;
-            matrix[j][i] = value;   // зеркально — та же дорога
+    int range = maxC - minC + 1;
+    for (int i = 0; i < t.n; i++) {
+        t.distance[i][i] = 0;
+        for (int j = i + 1; j < t.n; j++) {
+            int v = minC + rand() % range;
+            t.distance[i][j] = v;
+            t.distance[j][i] = v;
         }
     }
 }
-void go(TSP& t, int city, int len, int cnt) {
+
+// ---------- печать матрицы ----------
+void printMatrD(TSP& t) {
+    for (int i = 0; i < t.n; i++) {
+        for (int j = 0; j < t.n; j++) {
+            cout << t.distance[i][j] << "\t";
+        }
+        cout << "\n";
+    }
+}
+void perebor(TSP& t, int city, int len, int cnt) {
     t.way[cnt] = city;
 
     if (cnt == t.n - 1) {
         int total = len + t.distance[city][0];
         if (total < t.bestLen) {
             t.bestLen = total;
-            for (int i = 0; i < t.n; i++) t.bestWay[i] = t.way[i];
+            for (int i = 0; i < t.n; i++) 
+                t.bestWay[i] = t.way[i];
             t.bestWay[t.n] = 0;
+        }
+        if (total > t.worstLen) {
+            t.worstLen = total;
         }
         return;
     }
@@ -61,7 +67,7 @@ void go(TSP& t, int city, int len, int cnt) {
 
     for (int next = 0; next < t.n; next++) {
         if (!t.location[next]) {
-            go(t, next, len + t.distance[city][next], cnt + 1);
+            perebor(t, next, len + t.distance[city][next], cnt + 1);
         }
     }
 
@@ -108,4 +114,9 @@ void greedyAlg(TSP& t, int startCity) {
     cnt++;
 
     t.bestLen = len;
+}
+double quality(int minC, int maxC, int greedy) {
+    if (maxC == minC) 
+        return 100.0;
+    return (double)(maxC - greedy) / (maxC - minC) * 100.0;
 }
