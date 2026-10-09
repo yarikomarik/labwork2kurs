@@ -38,7 +38,7 @@ int main() {
 
                 // полный перебор
                 auto t0 = chrono::high_resolution_clock::now();
-                perebor(t, 0, 0, 0);
+                pereborIterative(t);
                 auto t1 = chrono::high_resolution_clock::now();
                 double tb = chrono::duration<double>(t1 - t0).count();
 

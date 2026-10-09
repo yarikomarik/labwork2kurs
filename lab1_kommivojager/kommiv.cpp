@@ -8,6 +8,8 @@
 #include <climits>
 #include <ctime>
 #include <random>
+#include <climits>
+#include <algorithm>
 #define UI unsigned int
 using namespace std;
 
@@ -46,6 +48,82 @@ void printMatrD(TSP& t) {
         cout << "\n";
     }
 }
+
+
+
+//
+bool nextPermutation(int* P, int m) {
+    int i = m - 2;
+    // 1. Находим максимальное i, такое что P[i] < P[i+1]
+    while (i >= 0 && P[i] >= P[i+1]) {
+        i--;
+    }
+    if (i < 0) return false; // следующей перестановки нет
+
+    // 2. Находим максимальное j > i, такое что P[i] < P[j]
+    int j = m - 1;
+    while (P[j] <= P[i]) {
+        j--;
+    }
+
+    // 3. Меняем P[i] и P[j]
+    swap(P[i], P[j]);
+
+    // 4. Инвертируем хвост от i+1 до конца (упорядочиваем по возрастанию)
+    reverse(P + i + 1, P + m);
+    return true;
+}
+
+// Итеративный перебор всех гамильтоновых циклов, начинающихся в городе 0
+void pereborIterative(TSP& t) {
+    int n = t.n;
+    if (n <= 1) {
+        t.bestLen = 0;
+        t.worstLen = 0;
+        if (n == 1) {
+            t.bestWay[0] = 0;
+            t.bestWay[1] = 0;
+        }
+        return;
+    }
+
+    int m = n - 1; // количество городов, которые нужно переставлять (1..n-1)
+    int* P = new int[m];
+    for (int i = 0; i < m; ++i) {
+        P[i] = i + 1; // начальная перестановка: 1, 2, ..., n-1
+    }
+
+    t.bestLen = INT_MAX;
+    t.worstLen = -1; // или 0, если все длины положительны
+
+    do {
+        // Вычисляем длину маршрута: 0 -> P[0] -> P[1] -> ... -> P[m-1] -> 0
+        int total = t.distance[0][P[0]];
+        for (int i = 0; i < m - 1; ++i) {
+            total += t.distance[P[i]][P[i+1]];
+        }
+        total += t.distance[P[m-1]][0];
+
+        // Обновляем лучший маршрут
+        if (total < t.bestLen) {
+            t.bestLen = total;
+            t.bestWay[0] = 0;
+            for (int i = 0; i < m; ++i) {
+                t.bestWay[i + 1] = P[i];
+            }
+            t.bestWay[n] = 0;
+        }
+
+        // Обновляем худший маршрут
+        if (total > t.worstLen) {
+            t.worstLen = total;
+        }
+
+    } while (nextPermutation(P, m));
+
+    delete[] P;
+}
+//
 void perebor(TSP& t, int city, int len, int cnt) {
     t.way[cnt] = city;
 
