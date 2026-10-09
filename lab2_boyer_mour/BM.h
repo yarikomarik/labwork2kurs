@@ -3,6 +3,9 @@
 #include <string>
 #include <vector>
 
+std::vector<int> makeTable(const std::string& pattern);
+
+std::vector<int> search(const std::string& text, const std::string& pattern);
 // Поиск первого вхождения подстроки
 int findFirst(const std::string& text, const std::string& pattern);
 
