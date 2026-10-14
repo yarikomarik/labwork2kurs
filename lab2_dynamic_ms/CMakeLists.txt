@@ -1,0 +1,1 @@
+add_executable(lab2_dynamic_ms main.cpp dynMs.cpp dynMs.h dynMsT.h)
