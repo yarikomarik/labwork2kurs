@@ -11,6 +11,9 @@ private:
     void shrink();  // сжать
 
 public:
+    typedef int* iterator;
+    typedef const int* const_iterator;
+
     DynMs();
     DynMs(const int* other, int n);
     DynMs(const DynMs& other);
@@ -26,15 +29,28 @@ public:
 
     void sort();
 
+    int min() const;
+    int max() const;
+
     bool insert(int index, int value);
+    iterator insert(iterator pos, int value);
     bool removeAt(int index);
     bool removeByValue(int value);
+    bool removeByIterator(iterator pos);
+    bool removeRange(iterator first, iterator last);
+    int removeAllByValue(int value);
 
     int& operator[](int index);
     const int& operator[](int index) const;
 
-    typedef int* iterator;
-    typedef const int* const_iterator;
+    DynMs& operator+=(int value);
+    DynMs operator+(int value) const;
+
+    DynMs& operator+=(const DynMs& other);
+    DynMs operator+(const DynMs& other) const;
+
+    bool operator==(const DynMs& other) const;
+    bool operator!=(const DynMs& other) const;
     iterator begin();
     iterator end();
     const_iterator begin() const;

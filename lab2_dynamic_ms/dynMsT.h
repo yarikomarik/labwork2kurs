@@ -177,4 +177,132 @@ public:
         }
         return is;
     }
+        // Конструктор перемещения
+        MyArrayT(MyArrayT&& other) noexcept {
+            data = other.data;
+            count = other.count;
+            cap = other.cap;
+            other.data = nullptr;
+            other.count = 0;
+            other.cap = 0;
+        }
+    
+        // Присваивание перемещением
+        MyArrayT& operator=(MyArrayT&& other) noexcept {
+            if (this == &other) return *this;
+            delete[] data;
+            data = other.data;
+            count = other.count;
+            cap = other.cap;
+            other.data = nullptr;
+            other.count = 0;
+            other.cap = 0;
+            return *this;
+        }
+    
+        // Поиск минимума
+        T min() const {
+            if (count == 0) return T();
+            T m = data[0];
+            for (int i = 1; i < count; i++) {
+                if (data[i] < m) m = data[i];
+            }
+            return m;
+        }
+    
+        // Поиск максимума
+        T max() const {
+            if (count == 0) return T();
+            T m = data[0];
+            for (int i = 1; i < count; i++) {
+                if (data[i] > m) m = data[i];
+            }
+            return m;
+        }
+    
+        // Вставка перед итератором
+        iterator insert(iterator pos, const T& value) {
+            int index = (int)(pos - data);
+            if (index < 0 || index > count) return end();
+            insert(index, value);
+            return data + index;
+        }
+    
+        // Удаление всех по значению
+        int removeAllByValue(const T& value) {
+            int removed = 0;
+            for (int i = 0; i < count; ) {
+                if (data[i] == value) {
+                    removeAt(i);
+                    removed++;
+                } else {
+                    i++;
+                }
+            }
+            return removed;
+        }
+    
+        // Удаление по итератору
+        bool removeByIterator(iterator pos) {
+            int index = (int)(pos - data);
+            return removeAt(index);
+        }
+    
+        // Удаление диапазона
+        bool removeRange(iterator first, iterator last) {
+            int i1 = (int)(first - data);
+            int i2 = (int)(last - data);
+            if (i1 < 0 || i2 > count || i1 > i2) return false;
+            if (i1 == i2) return true;
+    
+            int n = i2 - i1;
+            for (int i = i2; i < count; i++) {
+                data[i - n] = data[i];
+            }
+            count -= n;
+            shrink();
+            return true;
+        }
+    
+        // Добавление в конец
+        MyArrayT& operator+=(const T& value) {
+            insert(count, value);
+            return *this;
+        }
+    
+        // Добавление в конец (копия)
+        MyArrayT operator+(const T& value) const {
+            MyArrayT tmp(*this);
+            tmp.insert(tmp.count, value);
+            return tmp;
+        }
+    
+        // Конкатенация
+        MyArrayT& operator+=(const MyArrayT& other) {
+            for (int i = 0; i < other.count; i++) {
+                insert(count, other.data[i]);
+            }
+            return *this;
+        }
+    
+        // Конкатенация (копия)
+        MyArrayT operator+(const MyArrayT& other) const {
+            MyArrayT tmp(*this);
+            tmp += other;
+            return tmp;
+        }
+    
+        // Сравнение
+        bool operator==(const MyArrayT& other) const {
+            if (count != other.count) return false;
+            for (int i = 0; i < count; i++) {
+                if (data[i] != other.data[i]) return false;
+            }
+            return true;
+        }
+    
+        // Неравенство
+        bool operator!=(const MyArrayT& other) const {
+            return !(*this == other);
+        }
 };
