@@ -1,70 +1,92 @@
 #include "BM.h"
 #include <algorithm>
 
+#include <vector>
+#include <string>
+
 std::vector<int> makeTable(const std::string& pattern) {
-    std::vector<int> table(256, -1);
-    for (int i = 0; i < (int)pattern.size(); i++) {
-        table[(unsigned char)pattern[i]] = i;
+    int m = pattern.size();
+    std::vector<int> table(256, m); 
+    for (int i = 0; i < m - 1; i++) {
+        table[(unsigned char)pattern[i]] = m - 1 - i;
     }
     return table;
 }
 
-int bmsearch(const std::string& text, const std::string& pattern, int startPos = 0, int endPos = -1) {
-    int n = text.size();
-    if (endPos == -1 || endPos >= n) {
-        endPos = n - 1;
-    }
-    int m = pattern.size();
+int boyerMourBased(int n, int m, char* s, char* p) {
+    std::vector<int> table = makeTable(std::string(p, m)); 
 
-    if (m == 0 || startPos < 0 || startPos > endPos || m > (endPos - startPos + 1)) return -1;
+    int i = m - 1; // i — индекс конца текущего окна в тексте
+    while (i < n) {
+        int k = i;       // k — текщий индекс в тексте
+        int j = m - 1;   // j — текущий индекс в шаблоне
+        int tmp = 0;     // tmp — количество совпавших символов
 
-    std::vector<int> table = makeTable(pattern);
-
-    int shift = startPos;
-    while (shift <= endPos - m + 1) {
-        int j = m - 1;
-
-        while (j >= 0 && pattern[j] == text[shift + j]) {
-            j--;
+        while (j >= 0) {
+            if (s[k] == p[j]) {
+                --k; --j; ++tmp;
+            } else {
+                break;
+            }
         }
 
         if (j < 0) {
-            return shift;
+            return k + 1;
         } else {
-            int badShift = j - table[(unsigned char)text[shift + j]];
-            if (badShift < 1) badShift = 1;
-            shift += badShift;
+            i += (table[(unsigned char)s[k]] - tmp);
         }
     }
     return -1;
 }
-
 int findFirst(const std::string& text, const std::string& pattern) {
-    return bmsearch(text, pattern, 0, text.size() - 1);
+    int n = text.size();
+    int m = pattern.size();
+    if (m == 0 || m > n) return -1;
+    
+    return boyerMourBased(n, m, const_cast<char*>(text.c_str()), const_cast<char*>(pattern.c_str()));
 }
 
 std::vector<int> findAll(const std::string& text, const std::string& pattern) {
     std::vector<int> res;
+    int n = text.size();
     int m = pattern.size();
-    if (m == 0) return res;
+    if (m == 0 || m > n) return res;
 
-    int pos = bmsearch(text, pattern, 0, text.size() - 1);
-    while (pos != -1) {
-        res.push_back(pos);
-        pos = bmsearch(text, pattern, pos + 1, text.size() - 1);
+    int pos = 0;
+    while (pos <= n - m) {
+        int found = boyerMourBased(n - pos, m, const_cast<char*>(text.c_str() + pos), const_cast<char*>(pattern.c_str()));
+        if (found == -1) break;
+
+        int absolutePos = pos + found;
+        res.push_back(absolutePos);
+
+        pos = absolutePos + 1;
     }
     return res;
 }
 
-std::vector<int> findAllInRange(const std::string& text, const std::string& pattern, int startPos, int endPos) {
+std::vector<int> findAllInRange(const std::string& text, const std::string& pattern, 
+                                int startPos, int endPos) {
     std::vector<int> res;
+    int n = text.size();
     int m = pattern.size();
-    if (m == 0 || startPos < 0 || endPos >= (int)text.size() || startPos > endPos) return res;
 
-    int pos = bmsearch(text, pattern, startPos, endPos);
-    while (pos != -1) {
-        res.push_back(pos);
-        pos = bmsearch(text, pattern, pos + 1, endPos);
+    if (m == 0 || startPos < 0 || endPos >= n || startPos > endPos) return res;
+    if (m > (endPos - startPos + 1)) return res;
+
+    int pos = startPos;
+    while (pos <= endPos - m + 1) {
+        int remainingLen = endPos - pos + 1;
+
+        int found = boyerMourBased(remainingLen, m, 
+                                   const_cast<char*>(text.c_str() + pos), 
+                                   const_cast<char*>(pattern.c_str()));
+        if (found == -1) break;
+
+        int absolutePos = pos + found;
+        res.push_back(absolutePos);
+
+        pos = absolutePos + 1;
     }
     return res;
 }
