@@ -1,6 +1,7 @@
 #include "BM.h"
 #include <algorithm>
 
+#include <iostream>
 #include <vector>
 #include <string>
 
@@ -15,6 +16,7 @@ std::vector<int> makeTable(const std::string& pattern) {
 
 int boyerMourBased(int n, int m, char* s, char* p) {
     std::vector<int> table = makeTable(std::string(p, m)); 
+    int valueOfIf=0;
 
     int i = m - 1; // i — индекс конца текущего окна в тексте
     while (i < n) {
@@ -24,6 +26,7 @@ int boyerMourBased(int n, int m, char* s, char* p) {
 
         while (j >= 0) {
             if (s[k] == p[j]) {
+                ++valueOfIf;
                 --k; --j; ++tmp;
             } else {
                 break;
@@ -31,11 +34,14 @@ int boyerMourBased(int n, int m, char* s, char* p) {
         }
 
         if (j < 0) {
+            std::cout<<"\n      value:"<<valueOfIf<<"\n";
             return k + 1;
         } else {
-            i += (table[(unsigned char)s[k]] - tmp);
+            //i += (table[(unsigned char)s[k]]);
+                        i += (table[(unsigned char)s[k]] - tmp);
         }
     }
+    std::cout<<"\n      value:"<<valueOfIf<<"\n";
     return -1;
 }
 int findFirst(const std::string& text, const std::string& pattern) {
