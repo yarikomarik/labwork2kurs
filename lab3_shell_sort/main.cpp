@@ -39,7 +39,7 @@ int main() {
                 cout << "  Shell:     no" << endl;
             }
 
-            // --- 2) сортировка Кнута ---
+            //сортировка Кнута
             vector<int> a2 = base;
             vector<int> g2 = gapsKnuth(n);
             clock_t t3 = clock();
@@ -53,7 +53,7 @@ int main() {
                 cout << "  Knuth:     no" << endl;
             }
 
-            // --- 3) сортировка Сэджвика ---
+            //сортировка Сэджвика
             vector<int> a3 = base;
             vector<int> g3 = gapsSedgewick(n);
             clock_t t5 = clock();
