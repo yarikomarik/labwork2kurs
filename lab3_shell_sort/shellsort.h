@@ -2,6 +2,8 @@
 #include <vector>
 using namespace std;
 
+int myrand(int lo, int hi);
+
 bool isSorted(vector<int>& a);
 
 void shellSort(vector<int>& a, vector<int> gaps);

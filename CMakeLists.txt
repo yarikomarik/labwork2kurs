@@ -6,4 +6,4 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 
-add_subdirectory(lab2_dynamic_ms)
+add_subdirectory(lab3_shell_sort)
