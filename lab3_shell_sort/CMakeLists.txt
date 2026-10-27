@@ -1,0 +1,1 @@
+add_executable(lab3_shell_sort main.cpp shellsort.cpp shellsort.h)
