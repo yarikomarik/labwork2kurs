@@ -2,12 +2,49 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <fstream>
 
 //новый ранд для больших чисел
 int myrand(int lo, int hi) {
-    int r = (rand() << 15) | rand();
-    int range = hi - lo + 1;
-    return lo + r % range;
+    long long range = (long long)hi - lo + 1;
+    long long r = ((long long)rand() * 32768LL + rand()) % range;
+    return (int)(lo + r);
+}
+
+// имя файла по параметрам массива
+string makeFileName(int n, int lo, int hi) {
+    return "array_n" + to_string(n)
+         + "_r" + to_string(lo)
+         + "_" + to_string(hi) + ".txt";
+}
+
+// сохранить массив в файл (по одному числу на строку)
+bool saveArray(vector<int>& a, string filename) {
+    ofstream f(filename.c_str());
+    if (!f.is_open()) {
+        std::cout << "cant create file" << filename << endl;
+        return false;
+    }
+    for (int i = 0; i < (int)a.size(); i++) {
+        f << a[i] << "\n";   // "\n", а не endl — иначе миллион строк пишется медленно
+    }
+    f.close();
+    return true;
+}
+
+// прочитать массив из файла
+bool loadArray(vector<int>& a, string filename) {
+    a.clear();
+    ifstream f(filename.c_str());
+    if (!f.is_open()) {
+        std::cout << "file not found: " << filename << endl;
+        return false;
+    }
+    int x;
+    while (f >> x) {
+        a.push_back(x);
+    }
+    return true;
 }
 
 //проверка сортировки

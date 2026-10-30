@@ -2,9 +2,18 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-
+#include <fstream>
+#include <string>
 int main() {
     srand(time(0));
+
+    // ---- запрос режима работы ----
+    std::cout << "enter mode(1-2)" << endl;
+    std::cout << "  1 - generate ms" << endl;
+    std::cout << "  2 - use old ms" << endl;
+
+    int mode;
+    std::cin >> mode;
 
     int sizes[3] = {10000, 100000, 1000000};
     int lows[3] = {-10, -1000, -100000};
@@ -17,11 +26,30 @@ int main() {
             int lo = lows[r];
             int hi = highs[r];
 
-            //заполняем массив
-            vector<int> base(n);
-            for (int i = 0; i < n; i++) {
-                base[i] = myrand(lo, hi);
-            }
+            std::string filename = makeFileName(sizes[s], lo, hi);
+            vector<int> base;
+
+            if (mode == 1) {
+                //генерация
+                base.resize(n);
+                for (int i = 0; i < n; i++) {
+                    base[i] = myrand(lo, hi);
+                }
+
+                if (!saveArray(base, filename)) {
+                    continue;
+                }
+                cout << "file saved: " << filename << endl;
+            } else {
+                //чтение
+                if (!loadArray(base, filename)) {
+                    cout << "  skip..." << endl << endl;
+                    continue;
+                }
+                if ((int)base.size()!=n){
+                    std::cout<< filename << " " << n << " " << base.size() << endl;
+                    continue;
+                }
 
             cout << "n = " << n << ", range = [" << lo << "; " << hi << "]" << endl;
 
@@ -34,9 +62,9 @@ int main() {
             double time1 = (double)(t2 - t1) / CLOCKS_PER_SEC;
 
             if (isSorted(a1)) {
-                cout << "  Shell:     yes, time = " << time1 << " s" << endl;
+                std::cout << "  Shell:     yes, time = " << time1 << " s" << endl;
             } else {
-                cout << "  Shell:     no" << endl;
+                std::cout << "  Shell:     no" << endl;
             }
 
             //сортировка Кнута
@@ -48,9 +76,9 @@ int main() {
             double time2 = (double)(t4 - t3) / CLOCKS_PER_SEC;
 
             if (isSorted(a2)) {
-                cout << "  Knuth:     yes, time = " << time2 << " s" << endl;
+                std::cout << "  Knuth:     yes, time = " << time2 << " s" << endl;
             } else {
-                cout << "  Knuth:     no" << endl;
+                std::cout << "  Knuth:     no" << endl;
             }
 
             //сортировка Сэджвика
@@ -62,13 +90,13 @@ int main() {
             double time3 = (double)(t6 - t5) / CLOCKS_PER_SEC;
 
             if (isSorted(a3)) {
-                cout << "  Sedgewick: yes, time = " << time3 << " s" << endl;
+                std::cout << "  Sedgewick: yes, time = " << time3 << " s" << endl;
             } else {
-                cout << "  Sedgewick: no" << endl;
+                std::cout << "  Sedgewick: no" << endl;
             }
 
-            cout << endl;
+            std::cout << endl;
         }
     }
-    return 0;
+}
 }
