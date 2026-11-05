@@ -1,4 +1,4 @@
-#include "BitVector.h"
+#include "boolvector.h"
 
 // ================= BitReference =================
 
