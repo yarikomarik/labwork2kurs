@@ -1,0 +1,1 @@
+add_executable(lab3_bool_vector main.cpp boolvector.cpp boolvector.h)
