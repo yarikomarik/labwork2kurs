@@ -1,0 +1,1 @@
+add_executable(lab4_pyramid_sort main.cpp pyramidsort.cpp pyramidsort.h)
