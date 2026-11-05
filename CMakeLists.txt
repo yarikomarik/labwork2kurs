@@ -6,4 +6,4 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 
-add_subdirectory(lab3_bool_vector)
+add_subdirectory(lab4_pyramid_sort)
