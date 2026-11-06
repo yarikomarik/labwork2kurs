@@ -3,11 +3,15 @@
 
 int main()
 {
-    BitVector a("10110010");
-    BitVector b(8, true);
+    BitVector a("11110010");
+    BitVector b(8, false);
+    BitVector c; 
 
+    
     std::cout << "a         = " << a << "\n";
-    std::cout << "b         = " << b << "\n";
+    std::cout << "b         = " << b << "\nenter c:";
+    std::cin>>c;
+    std::cout << "c         = " << c << "\n";
     std::cout << "~a        = " << ~a << "\n";
     std::cout << "a & b     = " << (a & b) << "\n";
     std::cout << "a | b     = " << (a | b) << "\n";

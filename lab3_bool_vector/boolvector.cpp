@@ -1,6 +1,6 @@
 #include "boolvector.h"
 
-// ================= BitReference =================
+//////////////////////// BitReference ////////////////////////
 
 // Конструктор
 BitVector::BitReference::BitReference(unsigned char* p, int pos) {
@@ -96,7 +96,7 @@ bool BitVector::BitReference::operator!=(const BitReference& other) const {
     return !(*this == other);
 }
 
-// ================= BitVector =================
+//////////////////////// BitVector ////////////////////////
 
 // Конструктор по умолчанию
 BitVector::BitVector() {
