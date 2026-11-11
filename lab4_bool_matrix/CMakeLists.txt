@@ -1,1 +1,1 @@
-add_executable(lab4_bool_vector)
+add_executable(lab4_bool_matrix boolmatrix.cpp boolmatrix.h dynMsT.cpp dynMsT.h main.cpp boolvector.cpp boolvector.h)
