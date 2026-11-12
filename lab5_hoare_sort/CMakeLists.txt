@@ -1,0 +1,1 @@
+add_executable(lab5_hoare_sort main.cpp hoaesort.cpp hoaresort.h)

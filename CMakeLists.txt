@@ -6,4 +6,4 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 
-add_subdirectory(lab4_bool_matrix)
+add_subdirectory(lab3_shell_sort)
