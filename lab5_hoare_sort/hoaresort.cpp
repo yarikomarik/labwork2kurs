@@ -1,4 +1,4 @@
-#include "quicksort.h"
+#include "hoaresort.h"
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
@@ -6,15 +6,14 @@
 using namespace std;
 
 //быстрая сортировка Хоара
-void quickSortHoare3(int arr[], int l, int r) {
-    //если l >= r, то выход
+void quickSortHoare(int arr[], int l, int r) {
     if (l >= r) {
         return;
     }
 
     int i = l;
     int j = r;
-    int x = arr[(l + r) / 2]; // Опорный элемент (эталон) берем из середины
+    int x = arr[(l + r) / 2]; // Опорный элемент берем из середины
 
     while (i <= j) {
         while (arr[i] < x) {
@@ -35,10 +34,10 @@ void quickSortHoare3(int arr[], int l, int r) {
     }
 
     //для фрагмента от l до j
-    quickSortHoare3(arr, l, j);
+    quickSortHoare(arr, l, j);
     
     //для фрагмента от i до r
-    quickSortHoare3(arr, i, r);
+    quickSortHoare(arr, i, r);
 }
 
 
